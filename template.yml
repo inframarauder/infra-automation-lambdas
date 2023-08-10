@@ -1,0 +1,34 @@
+## SAM template to deploy the python code as a lambda function cron job
+Transform: "AWS::Serverless-2016-10-31"
+Description: "Lambda function to run the python code as a cron job and cleanup AWS resources"
+Resources:
+  LambdaFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: aws-cleanup-lambda
+      Handler: main.handler
+      Runtime: python3.8
+      CodeUri: src
+      Description: "Lambda function to run the python code as a cron job and cleanup AWS resources"
+      MemorySize: 256
+      Timeout: 900
+      Policies:
+        - AWSLambdaBasicExecutionRole
+        # IAM policy to destroy ec2 instances, volumes and snapshots
+        - Version: "2012-10-17"
+          Statement:
+            - Effect: Allow
+              Action:
+                - ec2:DescribeRegions
+                - ec2:DescribeInstances
+                - ec2:DescribeVolumes
+                - ec2:DescribeSnapshots
+                - ec2:DeleteSnapshot
+                - ec2:DeleteVolume
+                - ec2:TerminateInstances
+              Resource: "*"
+      Events:
+        Schedule:
+          Type: Schedule
+          Properties:
+            Schedule: cron(0 0 * * ? *) # Run the lambda function every day at 00:00 UTC
