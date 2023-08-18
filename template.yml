@@ -7,7 +7,7 @@ Resources:
     Properties:
       FunctionName: tf-cloud-destroy-lambda
       Handler: main.handler
-      Runtime: python3.8
+      Runtime: python3.9
       CodeUri: src
       Description: "Lambda function to run as cron job and destroy the resources created by terraform"
       MemorySize: 256
