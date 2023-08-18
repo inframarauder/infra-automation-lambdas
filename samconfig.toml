@@ -1,8 +1,8 @@
 version = 0.1
 [default.deploy.parameters]
-stack_name = "aws-cleanup-lambda"
+stack_name = "tf-cloud-destroy-lambda"
 resolve_s3 = true
-s3_prefix = "aws-cleanup-lambda"
+s3_prefix = "tf-cloud-destroy-lambda"
 region = "ap-south-1"
 confirm_changeset = true
 capabilities = "CAPABILITY_IAM"
