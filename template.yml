@@ -29,7 +29,7 @@ Parameters:
   Org:
     Type: String
     Description: "Terraform Cloud Organization"
-  Apikey:
+  ApiKey:
     Type: String
     Description: "Terraform Cloud API Key"
   ApiUrl:

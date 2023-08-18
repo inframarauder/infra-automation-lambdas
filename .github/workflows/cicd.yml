@@ -23,4 +23,4 @@ jobs:
       # sam build
       - run: sam build --use-container
       # sam deploy
-      - run: sam deploy --no-confirm-changeset --no-fail-on-empty-changeset --parameter-overrides "Org=${{env.TF_ORGANIZATION}},ApiUrl=${{env.TF_API_URL}},ApiKey=${{env.TF_API_KEY}}"
+      - run: sam deploy --no-confirm-changeset --no-fail-on-empty-changeset --parameter-overrides "Org=${{env.TF_ORGANIZATION}},ApiKey=${{env.TF_API_KEY}},ApiUrl=${{env.TF_API_URL}}"
