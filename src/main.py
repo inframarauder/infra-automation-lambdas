@@ -1,6 +1,4 @@
 import os
-import time
-
 import requests
 
 
@@ -66,28 +64,6 @@ def trigger_destroy(workspace_id):
     return res["data"]["id"]  # return run id
 
 
-def refresh_destroy_status(run_id):
-    url = f"{TF_API_URL}/runs/{run_id}"
-    headers = {
-        "Authorization": f"Bearer {TF_API_KEY}",
-        "Content-Type": "application/vnd.api+json",
-    }
-
-    run_status = "pending"
-    while True:
-        if run_status == "applied":
-            print("Destroy completed!")
-            break
-        elif run_status == "errored":
-            print(f"Destroy failed!")
-            break
-        else:
-            print("Destroy in progress...")
-            res = requests.get(url=url, headers=headers).json()
-            run_status = res["data"]["attributes"]["status"]
-            time.sleep(5)
-
-
 def handler(event, context):
     # fetch all workspaces with auto-destroy tag
     workspaces = get_auto_destroy_workspaces()
@@ -102,8 +78,7 @@ def handler(event, context):
             print(f"{resource_count} to destroy...\n")
             # trigger destroy
             run_id = trigger_destroy(workspace["id"])
-            # refresh destroy status
-            refresh_destroy_status(run_id)
+            print(f"Destroy triggered: {run_id}")
 
         else:
             print(f"No resources to destroy")
