@@ -1,8 +1,8 @@
 version = 0.1
 [default.deploy.parameters]
-stack_name = "infra=automation-lambdas"
+stack_name = "infra-automation-lambdas"
 resolve_s3 = true
-s3_prefix = "infra=automation-lambdas"
+s3_prefix = "infra-automation-lambdas"
 region = "ap-south-1"
 confirm_changeset = true
 capabilities = "CAPABILITY_IAM"
