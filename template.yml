@@ -1,22 +1,22 @@
 ## SAM template to deploy the python code as a lambda function cron job
 Transform: "AWS::Serverless-2016-10-31"
-Description: "Lambda function to run as cron job and destroy the resources created by terraform"
+Description: "Lambda functions to automate various tasks in my personal infrastructure"
 Resources:
   LambdaFunction:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: tf-cloud-destroy-lambda
+      FunctionName: terraform-cloud-destroy
+      Description: "Lambda function to run as cron job and destroy the resources created by Terraform with Terraform Cloud as backend"
       Handler: main.handler
-      Runtime: python3.9
-      CodeUri: src
-      Description: "Lambda function to run as cron job and destroy the resources created by terraform"
+      Runtime: python3.11
+      CodeUri: src/terraform-cloud-destroy
       MemorySize: 256
       Timeout: 900
       Environment:
         Variables:
-          TF_ORGANIZATION: !Ref Org
-          TF_API_KEY: !Ref ApiKey
-          TF_API_URL: !Ref ApiUrl
+          TF_ORGANIZATION: !Ref TfCloudOrg
+          TF_API_KEY: !Ref TfCloudApiKey
+          TF_API_URL: !Ref TfCloudApiUrl
       Policies:
         - AWSLambdaBasicExecutionRole
       Events:
@@ -26,12 +26,12 @@ Resources:
             Schedule: cron(0 0 * * ? *) # Run the lambda function every day at 00:00 UTC
 
 Parameters:
-  Org:
+  TfCloudOrg:
     Type: String
     Description: "Terraform Cloud Organization"
-  ApiKey:
+  TfCloudApiKey:
     Type: String
     Description: "Terraform Cloud API Key"
-  ApiUrl:
+  TfCloudApiUrl:
     Type: String
     Description: "Terraform Cloud API URL"

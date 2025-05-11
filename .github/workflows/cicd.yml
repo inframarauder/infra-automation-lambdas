@@ -23,4 +23,11 @@ jobs:
       # sam build
       - run: sam build --use-container
       # sam deploy
-      - run: sam deploy --no-confirm-changeset --no-fail-on-empty-changeset --parameter-overrides ParameterKey=Org,ParameterValue=${{env.TF_ORGANIZATION}} ParameterKey=ApiKey,ParameterValue=${{env.TF_API_KEY}} ParameterKey=ApiUrl,ParameterValue=${{env.TF_API_URL}}
+      - run: |
+          sam deploy \
+            --no-confirm-changeset \
+            --no-fail-on-empty-changeset \
+            --parameter-overrides \
+              ParameterKey=TfCloudOrg,ParameterValue=${{ env.TF_ORGANIZATION }} \
+              ParameterKey=TfCloudApiKey,ParameterValue=${{ env.TF_API_KEY }} \
+              ParameterKey=TfCloudApiUrl,ParameterValue=${{ env.TF_API_URL }}
