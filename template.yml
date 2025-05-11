@@ -25,6 +25,47 @@ Resources:
           Properties:
             Schedule: cron(0 0 * * ? *) # Run the lambda function every day at 00:00 UTC
 
+    LambdaFunction:
+      Type: AWS::Serverless::Function
+      Properties:
+        FunctionName: aws-cleanup
+        Description: "Lambda function to run as cron job and cleanup AWS Resources using boto3"
+        Handler: main.handler
+        Runtime: python3.11
+        CodeUri: src/aws-cleanup
+        MemorySize: 256
+        Timeout: 900
+        Policies:
+          - AWSLambdaBasicExecutionRole
+          - AWSCleanupLambdaPolicy
+        Events:
+          Schedule:
+            Type: Schedule
+            Properties:
+              Schedule: cron(0 1 * * ? *) # Run the lambda function every day at 1.00 UTC
+    LambdaFunctionPolicy:
+      Type: AWS::IAM::Policy
+      Properties:
+        PolicyName: AWSCleanupLambdaPolicy
+        PolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+            - Effect: Allow
+              Action:
+                - ec2:DescribeInstances
+                - ec2:TerminateInstances
+                - ec2:DescribeVolumes
+                - ec2:DeleteVolume
+                - ec2:DescribeSnapshots
+                - ec2:DeleteSnapshot
+                - eks:ListClusters
+                - eks:DeleteCluster
+                - eks:DescribeCluster
+                - ecs:ListClusters
+                - ecs:DeleteCluster
+                - ecs:DescribeCluster
+              Resource: "*"
+
 Parameters:
   TfCloudOrg:
     Type: String

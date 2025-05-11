@@ -1,6 +1,13 @@
 import os
 import requests
+import logging
 
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(message)s"
+)
+logger = logging.getLogger(__name__)
 
 TF_API_URL = os.environ["TF_API_URL"].strip("\n").strip()
 TF_API_KEY = os.environ["TF_API_KEY"].strip("\n").strip()
@@ -71,17 +78,17 @@ def handler(event, context):
     for workspace in workspaces:
         # check if workspace has resources
         resource_count = get_workspace_resouce_count(workspace["id"])
-        print("======================================================")
-        print(f"Workspace: {workspace['name']} ({workspace['id']})")
-        print("======================================================")
+        logger.info("======================================================")
+        logger.info(f"Workspace: {workspace['name']} ({workspace['id']})")
+        logger.info("======================================================")
         if resource_count > 0:
-            print(f"{resource_count} to destroy...\n")
+            logger.info(f"{resource_count} to destroy...")
             # trigger destroy
             run_id = trigger_destroy(workspace["id"])
-            print(f"Destroy triggered: {run_id}")
+            logger.info(f"Destroy triggered: {run_id}")
 
         else:
-            print(f"No resources to destroy")
+            logger.info("No resources to destroy")
 
 
 if __name__ == "__main__":
