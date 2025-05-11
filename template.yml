@@ -2,7 +2,7 @@
 Transform: "AWS::Serverless-2016-10-31"
 Description: "Lambda functions to automate various tasks in my personal infrastructure"
 Resources:
-  LambdaFunction:
+  TerraformCloudDestroyLambda:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: terraform-cloud-destroy
@@ -25,7 +25,7 @@ Resources:
           Properties:
             Schedule: cron(0 0 * * ? *) # Run the lambda function every day at 00:00 UTC
 
-    LambdaFunction:
+    AWSCleanupLambda:
       Type: AWS::Serverless::Function
       Properties:
         FunctionName: aws-cleanup
@@ -43,7 +43,8 @@ Resources:
             Type: Schedule
             Properties:
               Schedule: cron(0 1 * * ? *) # Run the lambda function every day at 1.00 UTC
-    LambdaFunctionPolicy:
+
+    AWSCleanupLambdaPolicy:
       Type: AWS::IAM::Policy
       Properties:
         PolicyName: AWSCleanupLambdaPolicy
